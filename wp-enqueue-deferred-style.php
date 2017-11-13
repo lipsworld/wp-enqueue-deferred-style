@@ -15,6 +15,15 @@ define('WP_ENQUEUE_DEFERRED_STYLE_VERSION', '0.1.0');
 require_once(WP_ENQUEUE_DEFERRED_STYLE_PATH . 'inc/class-wp-enqueue-deferred-style.php');
 require_once(WP_ENQUEUE_DEFERRED_STYLE_PATH . 'inc/functions-wp-enqueue-deferred-style.php');
 
+function se_inspect_styles() {
+    global $wp_styles;
+    echo "<h2>Enqueued CSS Stylesheets</h2><ul>";
+    foreach( $wp_styles->queue as $handle ) :
+        wp_register_deferred_style( $handle );
+    endforeach;
+}
+add_action( 'wp_print_styles', 'se_inspect_styles' );
+
 register_deactivation_hook(__FILE__, array('WP_Enqueue_Deferred_Style', 'deactivate'));
 
 add_action('plugins_loaded', array('WP_Enqueue_Deferred_Style', 'get_instance'));
